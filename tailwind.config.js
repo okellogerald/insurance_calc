@@ -1,4 +1,5 @@
 import tailwindAnimate from "tailwindcss-animate";
+import tailwindTyprography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -6,7 +7,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      sans: 'TTHoves',
+      sans: "TTHoves",
     },
     container: {
       center: true,
@@ -72,5 +73,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindAnimate],
+  plugins: [tailwindAnimate, tailwindTyprography],
 };
