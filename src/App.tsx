@@ -1,6 +1,7 @@
 import CountBtn from '@/components/CountBtn';
 import ReactSVG from '@/assets/react.svg';
 import { Badge } from '@/components/ui/badge';
+import { Button } from './components/ui/button';
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
           <Badge variant="outline">shadcn/ui</Badge>
         </a>
         <CountBtn />
+        <Button variant={"destructive"} >
+          This is a destructive button
+        </Button>
       </div>
     </main>
   );

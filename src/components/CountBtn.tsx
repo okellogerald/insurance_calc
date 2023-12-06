@@ -10,7 +10,7 @@ export default function CountBtn({ className }: Props) {
   const [count, setCount] = useState(0);
 
   return (
-    <Button onClick={() => setCount((count) => count + 1)} className={cn('', className)}>
+    <Button variant={"destructive"} onClick={() => setCount((count) => count + 1)} className={cn('', className)}>
       Count is: {count}
     </Button>
   );
