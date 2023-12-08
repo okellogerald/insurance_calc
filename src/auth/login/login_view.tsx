@@ -41,7 +41,7 @@ export function LogInPage() {
 
     return <>
         <AuthLayout>
-            <h2>Log In</h2>
+            <h3 className="text-center">Log In</h3>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -51,7 +51,7 @@ export function LogInPage() {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="email" {...field} />
+                                    <Input placeholder="" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -63,12 +63,12 @@ export function LogInPage() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="password" {...field} />
+                                    <Input placeholder="" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Submit</Button>
+                    <Button className="w-full" type="submit">Submit</Button>
                 </form>
             </Form>
         </AuthLayout>

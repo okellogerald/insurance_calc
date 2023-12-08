@@ -13,7 +13,7 @@ import {
     FormLabel,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import MainLayout from "@/layouts/main_layout"
+import AuthLayout from "@/layouts/auth_layout"
 
 export function SignUpPage() {
     const formSchema = z.object({
@@ -40,8 +40,8 @@ export function SignUpPage() {
     }
 
     return <>
-        <MainLayout>
-            <h2>Sign Up</h2>
+        <AuthLayout>
+            <h3 className="text-center">Sign Up</h3>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <FormField
@@ -51,7 +51,7 @@ export function SignUpPage() {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="email" {...field} />
+                                    <Input placeholder="" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
@@ -63,15 +63,15 @@ export function SignUpPage() {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="password" {...field} />
+                                    <Input placeholder="" {...field} />
                                 </FormControl>
                             </FormItem>
                         )}
                     />
-                    <Button type="submit">Submit</Button>
+                    <Button className="w-full" type="submit">Submit</Button>
                 </form>
             </Form>
-        </MainLayout>
+        </AuthLayout>
     </>
 }
 
