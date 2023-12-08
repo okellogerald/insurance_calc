@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App.tsx';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -8,11 +7,12 @@ import {
 import '@/styles/globals.css';
 import LogInPage from './auth/login/login_view.tsx';
 import SignUpPage from './auth/signup/signup_view.tsx';
+import WelcomePage from './welcome/welcome_page.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <WelcomePage />,
   },
   {
     path: "/login",
