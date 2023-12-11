@@ -34,7 +34,6 @@ function HomePage() {
     }
 
     const signUp = () => navigate("/signup");
-    const logIn = () => navigate("/login");
 
     return (
         <>

@@ -11,6 +11,7 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import AuthLayout from "@/layouts/auth_layout"
@@ -57,6 +58,7 @@ export function SignUpPage() {
                                 <FormControl>
                                     <Input placeholder="" {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -69,6 +71,7 @@ export function SignUpPage() {
                                 <FormControl>
                                     <Input placeholder="" {...field} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
