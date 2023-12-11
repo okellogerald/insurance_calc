@@ -6,9 +6,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
+import { useLogInStore } from "./login_state";
+import { Loader2 } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
-function HomePage() {
+function LogInPage() {
     const navigate = useNavigate();
+    const state = useLogInStore()
+    const { toast } = useToast()
+
+    const signUp = () => navigate("/signup");
 
     const formSchema = z.object({
         email: z.string().email({
@@ -22,18 +29,23 @@ function HomePage() {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-        },
+        defaultValues: {},
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        await state.logIn(values.email, values.password);
+        if (state.error !== undefined) {
+            toast({
+                variant: "destructive",
+                title: `Request failed with status code ${state.error.statusCode}`,
+                description: state.error.message,
+            })
+        }
+        if (state.data !== undefined) {
+            navigate("/")
+        }
     }
-
-    const signUp = () => navigate("/signup");
 
     return (
         <>
@@ -68,7 +80,17 @@ function HomePage() {
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" type="submit">Submit</Button>
+
+                        <div className="mt-5"></div>
+
+                        {
+                            state.loading ? <Button className="w-full" disabled>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Please wait
+                            </Button>
+                                :
+                                <Button className="w-full" type="submit" >Submit</Button>
+                        }
                     </form>
                 </Form>
 
@@ -85,4 +107,4 @@ function HomePage() {
     )
 }
 
-export default HomePage
+export default LogInPage

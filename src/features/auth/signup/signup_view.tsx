@@ -16,8 +16,17 @@ import {
 import { Input } from "@/components/ui/input"
 import AuthLayout from "@/layouts/auth_layout"
 import { useNavigate } from "react-router"
+import { useToast } from "@/components/ui/use-toast"
+import { useSignUpStore } from "./signup_state"
+import { Loader2 } from "lucide-react"
 
 export function SignUpPage() {
+    const state = useSignUpStore()
+    const { toast } = useToast()
+    const navigate = useNavigate();
+
+    const logIn = () => navigate("/login");
+
     const formSchema = z.object({
         email: z.string().email({
             message: "Please provide a valid email",
@@ -35,20 +44,25 @@ export function SignUpPage() {
     })
 
     // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        await state.signUp(values.email, values.password);
+        if (state.error !== undefined) {
+            toast({
+                variant: "destructive",
+                title: `Request failed with status code ${state.error.statusCode}`,
+                description: state.error.message,
+            })
+        }
+        if (state.data !== undefined) {
+            navigate("/")
+        }
     }
-
-    const navigate = useNavigate();
-    const logIn = () => navigate("/");
 
     return <>
         <AuthLayout>
             <h3 className="text-center">Sign Up</h3>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
                         name="email"
@@ -75,7 +89,17 @@ export function SignUpPage() {
                             </FormItem>
                         )}
                     />
-                    <Button className="w-full" type="submit">Submit</Button>
+
+                    <div className="mt-5"></div>
+
+                    {
+                        state.loading ? <Button className="w-full" disabled>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Please wait
+                        </Button>
+                            :
+                            <Button className="w-full" type="submit" >Submit</Button>
+                    }
                 </form>
             </Form>
 
