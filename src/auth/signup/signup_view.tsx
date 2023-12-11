@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import AuthLayout from "@/layouts/auth_layout"
+import { useNavigate } from "react-router"
 
 export function SignUpPage() {
     const formSchema = z.object({
@@ -38,6 +39,9 @@ export function SignUpPage() {
         // ✅ This will be type-safe and validated.
         console.log(values)
     }
+
+    const navigate = useNavigate();
+    const logIn = () => navigate("/");
 
     return <>
         <AuthLayout>
@@ -71,6 +75,16 @@ export function SignUpPage() {
                     <Button className="w-full" type="submit">Submit</Button>
                 </form>
             </Form>
+
+            <div className="flex place-content-end mt-4">
+                <div className="text-gray-500 mr-2">
+                    Have an account already?
+                </div>
+                <div className="text-primary font-semibold">
+                    <a onClick={logIn} className="cursor-pointer">Log In</a>
+                </div>
+            </div>
+
         </AuthLayout>
     </>
 }
