@@ -1,14 +1,9 @@
 import BaseRepository from "@/api/base_repo";
-import User from "@/models/user";
-
-interface LogInInfo extends User {
-    accessToken: string,
-    refreshToken: string,
-}
+import { User } from "./models/user";
 
 export default class AuthRepository extends BaseRepository {
-    async logIn(email: string, password: string): Promise<LogInInfo> {
-        return await this.post<LogInInfo>("log_in", {
+    async logIn(email: string, password: string): Promise<User> {
+        return await this.post<User>("log_in", {
             email: email,
             password: password,
         })

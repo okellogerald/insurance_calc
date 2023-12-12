@@ -1,5 +1,5 @@
-import User from "@/models/user"
 import { create } from "zustand"
+import { User } from "./models/user";
 
 export const useUserStore = create<User | null>()(() => (null))
 
@@ -14,20 +14,31 @@ export class AuthManager {
         return this._instance || (this._instance = new this());
     }
 
-    init() {
+    /**
+     * Returns true if user exists in local storage
+     */
+    checkUserInStorage(): boolean {
         try {
             const json = localStorage.getItem("user")
-            if (json === null) return
+            if (json === null) return false
+
             const user: User = JSON.parse(json)
+            console.log("user ", user)
             useUserStore.setState(user)
+            return true
         } catch (_) {
             useUserStore.setState(null)
+            return false
         }
     }
 
-    logIn(user: User, accessToken: string, refreshToken: string) {
-        localStorage.setItem("accToken", accessToken)
-        localStorage.setItem("refToken", refreshToken)
+    logIn(user: User) {
+        localStorage.setItem("user", JSON.stringify(user))
         useUserStore.setState(user)
+    }
+
+    logOut() {
+        useUserStore.setState(null)
+        localStorage.removeItem("user")
     }
 }
