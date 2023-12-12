@@ -6,16 +6,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
-import { useLogInStore } from "./login_state";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { LogInManager, useLogInState } from "./manager";
 
 function LogInPage() {
     const navigate = useNavigate();
-    const state = useLogInStore()
+    const logInState = useLogInState()
     const { toast } = useToast()
 
     const signUp = () => navigate("/signup");
+    const goHome = () => navigate("/");
 
     const formSchema = z.object({
         email: z.string().email({
@@ -34,16 +35,16 @@ function LogInPage() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        await state.logIn(values.email, values.password);
-        if (state.error !== undefined) {
+        await LogInManager.instance.logIn(values.email, values.password);
+        if (logInState.error !== null) {
             toast({
                 variant: "destructive",
-                title: `Request failed with status code ${state.error.statusCode}`,
-                description: state.error.message,
+                title: `Request failed with status code ${logInState.error.statusCode}`,
+                description: logInState.error.message,
             })
         }
-        if (state.data !== undefined) {
-            navigate("/")
+        if (logInState.user !== null) {
+            goHome()
         }
     }
 
@@ -84,7 +85,7 @@ function LogInPage() {
                         <div className="mt-5"></div>
 
                         {
-                            state.loading ? <Button className="w-full" disabled>
+                            logInState.loading ? <Button className="w-full" disabled>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                 Please wait
                             </Button>

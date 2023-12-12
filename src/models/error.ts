@@ -9,7 +9,7 @@ export default class APIError {
         this.statusCode = sCode;
     }
 
-    static from(err: any): APIError {
+    static from(err: unknown): APIError {
         if (err instanceof AxiosError) {
             return {
                 statusCode: err.response?.status ?? 500,

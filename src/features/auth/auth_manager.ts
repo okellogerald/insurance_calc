@@ -1,19 +1,33 @@
-import { atom, useAtom } from "jotai";
 import User from "@/models/user"
+import { create } from "zustand"
 
-const userAtom = atom<User | null>(null)
+export const useUserStore = create<User | null>()(() => (null))
 
-export default class AuthManager {
+export class AuthManager {
+    private static _instance: AuthManager;
+
+    private constructor() {
+        //...
+    }
+
+    public static get instance() {
+        return this._instance || (this._instance = new this());
+    }
 
     init() {
-        const { user, setUser } = useAtom(userAtom)
         try {
             const json = localStorage.getItem("user")
             if (json === null) return
             const user: User = JSON.parse(json)
-            setUser(user)
+            useUserStore.setState(user)
         } catch (_) {
-            setUser(null)
+            useUserStore.setState(null)
         }
+    }
+
+    logIn(user: User, accessToken: string, refreshToken: string) {
+        localStorage.setItem("accToken", accessToken)
+        localStorage.setItem("refToken", refreshToken)
+        useUserStore.setState(user)
     }
 }

@@ -17,15 +17,15 @@ import { Input } from "@/components/ui/input"
 import AuthLayout from "@/layouts/auth_layout"
 import { useNavigate } from "react-router"
 import { useToast } from "@/components/ui/use-toast"
-import { useSignUpStore } from "./signup_state"
 import { Loader2 } from "lucide-react"
+import { SignUpManager, useSignUpState } from "./manager"
 
 export function SignUpPage() {
-    const state = useSignUpStore()
+    const state = useSignUpState()
     const { toast } = useToast()
     const navigate = useNavigate();
 
-    const logIn = () => navigate("/login");
+    const goToLogInPage = () => navigate("/login");
 
     const formSchema = z.object({
         email: z.string().email({
@@ -44,16 +44,16 @@ export function SignUpPage() {
 
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        await state.signUp(values.email, values.password);
-        if (state.error !== undefined) {
+        await SignUpManager.instance.signUp(values.email, values.password);
+        if (state.error !== null) {
             toast({
                 variant: "destructive",
                 title: `Request failed with status code ${state.error.statusCode}`,
                 description: state.error.message,
             })
         }
-        if (state.data !== undefined) {
-            navigate("/")
+        if (state.user !== null) {
+            goToLogInPage()
         }
     }
 
@@ -107,7 +107,7 @@ export function SignUpPage() {
                     Have an account already?
                 </div>
                 <div className="text-primary font-semibold">
-                    <a onClick={logIn} className="cursor-pointer">Log In</a>
+                    <a onClick={goToLogInPage} className="cursor-pointer">Log In</a>
                 </div>
             </div>
 
