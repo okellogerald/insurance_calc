@@ -19,13 +19,35 @@ import { useNavigate } from "react-router"
 import { useToast } from "@/components/ui/use-toast"
 import { Loader2 } from "lucide-react"
 import { SignUpManager, useSignUpState } from "./manager"
+import { match } from "ts-pattern";
+import APIError from "@/models/error"
 
 export function SignUpPage() {
     const state = useSignUpState()
     const { toast } = useToast()
     const navigate = useNavigate();
 
+    const loading = match(state)
+        .with({ "kind": "loading" }, ({ loading }) => loading)
+        .otherwise(() => false)
+
     const goToLogInPage = () => navigate("/login");
+
+    const onError = (error: APIError) => {
+        toast({
+            variant: "destructive",
+            title: `Request failed with status code ${error.statusCode}`,
+            description: error.message,
+        })
+    }
+
+    const onSuccess = () => {
+        toast({
+            title: `Registration was successful`,
+            description: 'Please log in to your account',
+        })
+        goToLogInPage()
+    }
 
     const formSchema = z.object({
         email: z.string().email({
@@ -45,16 +67,12 @@ export function SignUpPage() {
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
         await SignUpManager.instance.signUp(values.email, values.password);
-        if (state.error !== null) {
-            toast({
-                variant: "destructive",
-                title: `Request failed with status code ${state.error.statusCode}`,
-                description: state.error.message,
-            })
-        }
-        if (state.user !== null) {
-            goToLogInPage()
-        }
+        console.log("---------")
+        console.log(state)
+        console.log("---------")
+        match(state)
+            .with({ kind: "error" }, ({ error }) => onError(error))
+            .with({ kind: "success" }, onSuccess)
     }
 
     return <>
@@ -92,7 +110,7 @@ export function SignUpPage() {
                     <div className="mt-5"></div>
 
                     {
-                        state.loading ? <Button className="w-full" disabled>
+                        loading ? <Button className="w-full" disabled>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             Please wait
                         </Button>

@@ -1,14 +1,25 @@
-import { SignUpState } from "./signup_state";
 import { create } from "zustand"
 import AuthRepository from "../repository";
 import APIError from "@/models/error";
+import { User } from "../models/user";
 
-export const useSignUpState = create<SignUpState>()(() => ({
-    loading: false,
-    error: null,
-    user: null,
-}))
+type SignUpState = LoadingState | ErrorState | SuccessState;
 
+interface LoadingState {
+    kind: "loading";
+    loading: boolean;
+}
+interface ErrorState {
+    kind: "error";
+    error: APIError;
+}
+interface SuccessState {
+    kind: "success";
+    user: User;
+}
+
+
+export const useSignUpState = create<SignUpState>(() => ({ kind: "loading", loading: false }))
 
 export class SignUpManager {
     private static _instance: SignUpManager;
@@ -21,16 +32,20 @@ export class SignUpManager {
         return this._instance || (this._instance = new this());
     }
 
+    setState(state: SignUpState) {
+        useSignUpState.setState(state, true)
+    }
+
     async signUp(email: string, password: string): Promise<void> {
-        useSignUpState.setState(({ user: null, loading: true, error: null }))
+        this.setState(({ kind: "loading", loading: true }))
 
         const repo = new AuthRepository()
         try {
             const user = await repo.signUp(email, password)
-            useSignUpState.setState(({ user: user, loading: false, error: null }))
+            this.setState(({ kind: "success", user: user }))
         } catch (error) {
             const err = APIError.from(error)
-            useSignUpState.setState(({ user: null, loading: false, error: err }))
+            this.setState(({ kind: "error", error: err }))
         }
     }
 }
