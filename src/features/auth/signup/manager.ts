@@ -1,25 +1,7 @@
-import { create } from "zustand"
 import AuthRepository from "../repository";
 import APIError from "@/models/error";
-import { User } from "../models/user";
+import { SignUpState, useSignUpState } from "./signup_state";
 
-type SignUpState = LoadingState | ErrorState | SuccessState;
-
-interface LoadingState {
-    kind: "loading";
-    loading: boolean;
-}
-interface ErrorState {
-    kind: "error";
-    error: APIError;
-}
-interface SuccessState {
-    kind: "success";
-    user: User;
-}
-
-
-export const useSignUpState = create<SignUpState>(() => ({ kind: "loading", loading: false }))
 
 export class SignUpManager {
     private static _instance: SignUpManager;
@@ -32,7 +14,7 @@ export class SignUpManager {
         return this._instance || (this._instance = new this());
     }
 
-    setState(state: SignUpState) {
+    private setState(state: SignUpState): void {
         useSignUpState.setState(state, true)
     }
 
