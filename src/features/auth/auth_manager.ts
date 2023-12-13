@@ -34,6 +34,7 @@ export class AuthManager {
 
     logIn(user: User) {
         localStorage.setItem("user", JSON.stringify(user))
+        localStorage.setItem("acc_token", user.accessToken)
         useUserStore.setState(user)
     }
 

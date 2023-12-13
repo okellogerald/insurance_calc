@@ -10,20 +10,26 @@ import LogInPage from './features/auth/login/login_page.tsx';
 import { Toaster } from './components/ui/toaster.tsx';
 import HomePage from './pages/home_page.tsx';
 import { MustBeLoggedInMiddleware } from './features/auth/middleware.ts';
+import CalculatorPage from './features/calculator/calculator_page.tsx';
+import Routes from './constants/routes.ts';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: Routes.HOME_PAGE,
     loader: MustBeLoggedInMiddleware,
     element: <HomePage />,
   },
   {
-    path: "/login",
+    path: Routes.LOG_IN_PAGE,
     element: <LogInPage />,
   },
   {
-    path: "/signup",
+    path: Routes.SIGN_UP_PAGE,
     element: <SignUpPage />,
+  },
+  {
+    path: Routes.CALCULATOR_PAGE,
+    element: <CalculatorPage />,
   },
 ]);
 
