@@ -22,7 +22,6 @@ import { SignUpManager } from "./manager"
 import { match } from "ts-pattern";
 import APIError from "@/models/error"
 import { useSignUpState } from "./signup_state"
-import stylex from '@stylexjs/stylex';
 
 export function SignUpPage() {
     return <>
@@ -126,20 +125,6 @@ function SubmitButton() {
         }
     </div>
 }
-
-const logInPromptStyles = stylex.create({
-    row: {
-      display: 'flex',
-      margin: '4rem',
-    },
-    text: {
-      color: 'gray',
-    },
-    link: {
-        color: 'gray',
-        cursor: 'pointer',
-    },
-  });
 
 function LogInPrompt() {
     const navigate = useNavigate();
