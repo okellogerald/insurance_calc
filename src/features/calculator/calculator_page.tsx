@@ -3,6 +3,7 @@ import { useCalculatorState } from "./models/calculator_state"
 import { CalculatorManager } from "./manager";
 import { useEffect } from "react";
 import { ErrorView } from "@/views/error_view";
+import CalculationView from "./views/calculation_view";
 
 export default function CalculatorPage() {
     const state = useCalculatorState()
@@ -33,10 +34,7 @@ export default function CalculatorPage() {
             </>
         }
         {
-            plans.length > 0 &&
-            <>
-                {plans.map(p => <div>{p.name}</div>)}
-            </>
+            plans.length > 0 && <CalculationView plans={plans} />
         }
         {
             error !== null &&
