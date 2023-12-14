@@ -2,13 +2,14 @@ import { match } from "ts-pattern"
 import { useCalculatorState } from "./models/calculator_state"
 import { CalculatorManager } from "./manager";
 import { useEffect } from "react";
+import { ErrorView } from "@/views/error_view";
 
 export default function CalculatorPage() {
     const state = useCalculatorState()
 
-    useEffect(() => {
-        CalculatorManager.instance.getPlans()
-    }, [])
+    const getPlans = () => CalculatorManager.instance.getPlans()
+
+    useEffect(() => { getPlans() }, [])
 
     const plans = match(state)
         .with({ kind: "success" }, ({ plans }) => plans)
@@ -32,19 +33,14 @@ export default function CalculatorPage() {
             </>
         }
         {
-            plans.length >= 0 &&
+            plans.length > 0 &&
             <>
                 {plans.map(p => <div>{p.name}</div>)}
             </>
         }
         {
             error !== null &&
-            <>
-                <div>
-                    <p>An error happened</p>
-                    <p>{error.message}</p>
-                </div>
-            </>
+            <ErrorView error={error} refreshFn={getPlans}></ErrorView>
         }
     </>
 }

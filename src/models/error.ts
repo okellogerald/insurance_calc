@@ -10,6 +10,7 @@ export default class APIError {
     }
 
     static from(err: unknown): APIError {
+        console.log(err)
         if (err instanceof AxiosError) {
             return {
                 statusCode: err.response?.status ?? 500,

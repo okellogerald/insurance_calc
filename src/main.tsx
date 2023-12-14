@@ -15,11 +15,6 @@ import Routes from './constants/routes.ts';
 
 const router = createBrowserRouter([
   {
-    path: Routes.HOME_PAGE,
-    loader: MustBeLoggedInMiddleware,
-    element: <HomePage />,
-  },
-  {
     path: Routes.LOG_IN_PAGE,
     element: <LogInPage />,
   },
@@ -28,7 +23,13 @@ const router = createBrowserRouter([
     element: <SignUpPage />,
   },
   {
+    path: Routes.HOME_PAGE,
+    loader: MustBeLoggedInMiddleware,
+    element: <HomePage />,
+  },
+  {
     path: Routes.CALCULATOR_PAGE,
+    loader: MustBeLoggedInMiddleware,
     element: <CalculatorPage />,
   },
 ]);

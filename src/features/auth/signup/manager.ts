@@ -23,8 +23,9 @@ export class SignUpManager {
 
         const repo = new AuthRepository()
         try {
-            const user = await repo.signUp(email, password)
-            this.setState(({ kind: "success", user: user }))
+            const success = await repo.signUp(email, password)
+            if(!success) throw "Sign up was not successful. Please try again later"
+            this.setState(({ kind: "success" }))
         } catch (error) {
             const err = APIError.from(error)
             this.setState(({ kind: "error", error: err }))

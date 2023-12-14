@@ -29,7 +29,6 @@ function LogInForm() {
     const navigate = useNavigate();
     const { toast } = useToast()
 
-    const goHome = () => navigate("/");
 
     // 1. Schema
     const formSchema = z.object({
@@ -53,10 +52,12 @@ function LogInForm() {
             })
         }
 
+        const onSuccess = () => navigate("/");
+
         await LogInManager.instance.logIn(values.email, values.password);
         match(useLogInState.getState())
             .with({ kind: "error" }, ({ error }) => onError(error))
-            .with({ kind: "success" }, goHome)
+            .with({ kind: "success" }, onSuccess)
     }
 
     return <Form {...form}>

@@ -27,6 +27,7 @@ export class LogInManager {
             AuthManager.instance.logIn(user)
             this.setState(({ kind: "success", user: user }))
         } catch (error) {
+            console.log(error)
             const err = APIError.from(error)
             this.setState(({ kind: "error", error: err }))
         }

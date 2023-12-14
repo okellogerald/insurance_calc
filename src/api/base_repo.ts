@@ -1,4 +1,6 @@
-import axios, { AxiosHeaderValue, AxiosHeaders, AxiosRequestConfig, RawAxiosRequestHeaders } from "axios";
+import { useUserStore } from "@/features/auth/auth_manager";
+import { User } from "@/models/user";
+import axios from "axios";
 
 const root = 'http://127.0.0.1:3000';
 
@@ -10,26 +12,27 @@ export default class BaseRepository {
         this.rootUrl = rootUrl === undefined ? root : rootUrl
     }
 
-    private get defaultConfigs(): AxiosRequestConfig {
-        const config: AxiosRequestConfig = {}
+    private getLocalUser(): User | null {
+        return useUserStore.getState()
+    }
 
-        const accToken = localStorage.getItem("acc_token")
+    private updateConfigs(): void {
+        const accToken = this.getLocalUser()?.accessToken ?? null
+        console.log("access token ", accToken)
         if (accToken !== null) {
-            const headers : RawAxiosRequestHeaders = {
-            }
-            headers.Authorization = `Authorization Bearer ${accToken}`
-            config.headers = headers
+            axios.defaults.headers.common.Authorization = `Bearer ${accToken}`
         }
-        return config
     }
 
     async get<T>(path: string): Promise<T> {
-        const response = await axios.get<T>(`${this.rootUrl}/${path}`, this.defaultConfigs)
+        this.updateConfigs()
+        const response = await axios.get<T>(`${this.rootUrl}/${path}`)
         return response.data
     }
 
     async post<T>(path: string, data: object): Promise<T> {
-        const response = await axios.post<T>(`${this.rootUrl}/${path}`, data, this.defaultConfigs)
+        this.updateConfigs()
+        const response = await axios.post<T>(`${this.rootUrl}/${path}`, data)
         return response.data
     }
 }

@@ -6,11 +6,11 @@ import { z } from "zod";
 const planSchema = z.object({
     id: z.number(),
     name: z.string(),
-    available_terms: z.array(z.number()).default([]),
+    available_terms: z.array(z.number()).nullable(),
     sum_assured_dependent_terms: z.array(
         z.object({ sum_assured: z.number(), terms: z.array(z.number()) })
     )
-        .default([]),
+        .nullable(),
 });
 const plansSchema = z.array(planSchema)
 
@@ -24,11 +24,13 @@ export default class PlansRepository extends BaseRepository {
         const plans: Plan[] = []
         for (let i = 0; i < result.length; i++) {
             const item = result[i]
+            const sadt = item.sum_assured_dependent_terms ?? []
+            const at = item.available_terms ?? []
 
             const terms: SumAssuredDependentTerm[] = []
-            if (item.sum_assured_dependent_terms.length !== 0) {
-                for (let j = 0; j < item.sum_assured_dependent_terms.length; j++) {
-                    const e = item.sum_assured_dependent_terms[j];
+            if (sadt.length !== 0) {
+                for (let j = 0; j < sadt.length; j++) {
+                    const e = sadt[j];
                     terms.push({ terms: e.terms, sumAssured: e.sum_assured })
                 }
             }
@@ -36,12 +38,12 @@ export default class PlansRepository extends BaseRepository {
             const plan: Plan = {
                 id: item.id,
                 name: item.name,
-                availableTerms: item.available_terms.length === 0 ? null : item.available_terms,
-                sumAssuredDependentTerms: item.sum_assured_dependent_terms.length === 0 ? null : terms
+                availableTerms: at.length === 0 ? null : at,
+                sumAssuredDependentTerms: sadt.length === 0 ? null : terms
             }
             plans.push(plan)
         }
-        
+
         return plans
     }
 }

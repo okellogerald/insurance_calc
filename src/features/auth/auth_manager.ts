@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import { User } from "./models/user";
+import { User } from "../../models/user";
 
 export const useUserStore = create<User | null>()(() => (null))
 
@@ -22,19 +22,18 @@ export class AuthManager {
             const json = localStorage.getItem("user")
             if (json === null) return false
 
-            const user: User = JSON.parse(json)
-            console.log("user ", user)
+            const user = User.fromJson(JSON.parse(json))
             useUserStore.setState(user)
             return true
         } catch (_) {
+            console.log(_)
             useUserStore.setState(null)
             return false
         }
     }
 
     logIn(user: User) {
-        localStorage.setItem("user", JSON.stringify(user))
-        localStorage.setItem("acc_token", user.accessToken)
+        localStorage.setItem("user", user.toJson())
         useUserStore.setState(user)
     }
 
