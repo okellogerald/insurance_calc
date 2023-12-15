@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
 import { Plan } from "@/features/plans/models/plan"
+import { SumAssured } from "../../models/quote_props"
 
 export default class CalculationView extends React.Component<{ plans: Plan[] }> {
     render(): React.ReactNode {
@@ -37,53 +38,8 @@ export default class CalculationView extends React.Component<{ plans: Plan[] }> 
     }
 }
 
-class SumAssured {
-    id: number;
-    value: number;
-
-    constructor(id: number, valueInMillions: number) {
-        this.id = id
-        this.value = valueInMillions
-    }
-
-    get fullAmount(): number {
-        return this.value * 1000000
-    }
-
-    get label(): string {
-        return "TZS " + this.fullAmount.toLocaleString()
-    }
-}
-
-class Term {
-    id: number;
-    value: number;
-
-    constructor(id: number, valueInYrs: number) {
-        this.id = id
-        this.value = valueInYrs
-    }
-
-    get label(): string {
-        return this.value.toString() + " Years"
-    }
-}
-
-const sumAssureds = [
-    new SumAssured(1, 5.0),
-    new SumAssured(2, 7.5),
-    new SumAssured(3, 10.0),
-    new SumAssured(4, 12.5),
-    new SumAssured(5, 15.0),
-    new SumAssured(6, 17.5),
-    new SumAssured(7, 20.0),
-]
-
-const terms = [
-    new Term(1, 10),
-    new Term(1, 12),
-    new Term(1, 15),
-]
+const sumAssureds : SumAssured[]= []
+const terms : Term[]= []
 
 const CalcForm: React.FC<{ plans: Plan[] }> = ({ plans }) => {
     // hooks

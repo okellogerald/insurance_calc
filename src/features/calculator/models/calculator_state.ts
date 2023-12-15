@@ -12,6 +12,7 @@ interface ErrorState {
     kind: "error";
     error: APIError;
 }
+
 interface SuccessState {
     kind: "success";
     plans: Plan[];

@@ -3,7 +3,7 @@ import { useCalculatorState } from "./models/calculator_state"
 import { CalculatorManager } from "./manager";
 import { useEffect } from "react";
 import { ErrorView } from "@/views/error_view";
-import CalculationView from "./views/calculation_view";
+import CalculationView from "./views/calculation_view/calculation_view";
 
 export default function CalculatorPage() {
     const state = useCalculatorState()
