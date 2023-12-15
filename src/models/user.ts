@@ -20,6 +20,11 @@ export class User {
         this.refreshToken = refToken
     }
 
+    updateAccToken(token: string): User {
+        const user = new User(this.id, this.email, token, this.refreshToken)
+        return user;
+    }
+
     toJson(): string {
         const item = {
             id: this.id, email: this.email, access_token: this.accessToken, refresh_token: this.refreshToken

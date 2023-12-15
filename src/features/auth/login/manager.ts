@@ -24,7 +24,7 @@ export class LogInManager {
         const repo = new AuthRepository()
         try {
             const user = await repo.logIn(email, password)
-            AuthManager.instance.logIn(user)
+            AuthManager.instance.updateUser(user)
             this.setState(({ kind: "success", user: user }))
         } catch (error) {
             console.log(error)

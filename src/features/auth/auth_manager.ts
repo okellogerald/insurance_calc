@@ -32,7 +32,7 @@ export class AuthManager {
         }
     }
 
-    logIn(user: User) {
+    updateUser(user: User) {
         localStorage.setItem("user", user.toJson())
         useUserStore.setState(user)
     }

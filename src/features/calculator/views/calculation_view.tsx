@@ -363,7 +363,7 @@ const CalcForm: React.FC<{ plans: Plan[] }> = ({ plans }) => {
             />
 
             <Button className="w-full">Submit</Button>
-            <p className="font-light text-sm text-gray-600"><strong>Disclaimer</strong>: Please note the above is calculated based on an assumption that the reversionary bonus of 4.2% is declared each year, and a terminal bonus of 2% is provided on maturity.</p>
+            <p className="font-light text-sm text-gray-600"><strong className="font-medium">Disclaimer</strong>: Please note the above is calculated based on an assumption that the reversionary bonus of 4.2% is declared each year, and a terminal bonus of 2% is provided on maturity.</p>
         </form>
     </Form>
 }

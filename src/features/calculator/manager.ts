@@ -21,7 +21,6 @@ export class CalculatorManager {
     }
 
     async getPlans(): Promise<void> {
-        console.log("plans ", this.plans ?? 'hello ')
         if (this.plans !== null) {
             this.setState(({ kind: "success", plans: this.plans }))
         }
