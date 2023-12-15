@@ -1,6 +1,6 @@
 import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import React, { ReactNode } from "react";
-import { CalcFormControl, FormProps } from "./calculation_view";
+import { CalcFormControl } from "./calculation_view";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
