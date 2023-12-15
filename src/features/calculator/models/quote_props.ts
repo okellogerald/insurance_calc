@@ -10,7 +10,6 @@ export const useQuotePropsState = create<QuoteProps>(() => ({
     sumAssured: null
 }))
 
-
 export interface QuoteProps {
     plan: Nullable<Plan>
     name: string | null
@@ -50,7 +49,6 @@ export class Term {
         return this.value.toString() + " Years"
     }
 }
-
 
 const sumAssureds = [
     new SumAssured(1, 5.0),
